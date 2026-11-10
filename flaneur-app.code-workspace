@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"name": "🌍 .dev",
+			"path": "."
+		},
+		{
+			"name": "🌍 .github",
+			"path": "../.github"
+		}
+	],
+	"settings": {
+		"conventionalCommits.gitmoji": true,
+		"conventionalCommits.scopes": [
+			"workspace",
+			"devcontainer",
+			"ai",
+			"docs",
+			"ci",
+			"deps"
+		],
+		"cSpell.words": [
+			"flaneur",
+			"gitmoji",
+			"oxfmt",
+			"oxlint"
+		]
+	}
+}

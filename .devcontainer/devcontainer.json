@@ -1,0 +1,59 @@
+{
+  "name": "Flâneur",
+  // Stable machine name: Remote Control names the environment "<hostname>:<folder>", and the
+  // default hostname is the container id, which changes on every rebuild.
+  "runArgs": ["--hostname=flaneur-app"],
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:26",
+  "workspaceFolder": "/workspaces/.dev",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/.dev,type=bind,consistency=cached",
+  "features": {
+    // Secrets come from OpenBao (kv/shared/*, then kv/orgs/flaneur-app) into every process's env,
+    // VS Code included. Not in remoteEnv: `${localEnv:…}` is empty when VS Code attaches and
+    // would override them.
+    "ghcr.io/helpers4/devcontainer/openbao-env:1": {
+      "address": "https://bao.baxyz.dev:8200",
+      "paths": "shared/font-awesome,shared/web-awesome,orgs/flaneur-app"
+    },
+    "ghcr.io/helpers4/devcontainer/org-workspace:1": {
+      "autoDiscover": "public,private,internal,fork"
+    },
+    "ghcr.io/devcontainers/features/git-lfs:1": {},
+    "ghcr.io/helpers4/devcontainer/shell-history:1": {},
+    "ghcr.io/helpers4/devcontainer/git-absorb:1": {},
+    "ghcr.io/helpers4/devcontainer/essential-dev:1": {},
+    "ghcr.io/helpers4/devcontainer/github-dev:1": {},
+    "ghcr.io/helpers4/devcontainer/auto-header:1": {
+      "projectName": "Flâneur",
+      "license": "AGPL-3.0-or-later"
+    },
+    "ghcr.io/helpers4/devcontainer/typescript-dev:1": {},
+    "ghcr.io/helpers4/devcontainer/vite-plus:1": {},
+    "ghcr.io/helpers4/devcontainer/pnpm-store:1": {},
+    "ghcr.io/helpers4/devcontainer/package-auto-install:1": {
+      "autoDiscover": true
+    },
+    "ghcr.io/helpers4/devcontainer/claude-dev:1": {
+      "remoteControl": true,
+      "remoteControlAutoTrust": true,
+      // Sessions started from claude.ai run unwatched: a permission prompt would stall them.
+      "remoteControlPermissionMode": "auto",
+      // Default model of those sessions (claude-dev ≥ 1.4.2).
+      "remoteControlModel": "sonnet"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode-remote.remote-containers"
+      ]
+    }
+  },
+  "forwardPorts": [5173],
+  "portsAttributes": {
+    "5173": {
+      "label": "Vite dev server",
+      "onAutoForward": "notify"
+    }
+  },
+  "remoteUser": "node"
+}

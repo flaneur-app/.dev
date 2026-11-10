@@ -1,0 +1,9 @@
+.history
+.copilot
+.DS_Store
+Thumbs.db
+node_modules
+
+# Environment files
+.env*
+!.env.sample
