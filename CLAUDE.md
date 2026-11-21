@@ -20,6 +20,11 @@ anything that could destroy the underlying Docker volumes.
 | ---- | ---- | ---- |
 | `/workspaces/.dev` | `.dev` | Orchestration workspace + devcontainer + canonical agent rules |
 | `/workspaces/.github` | `.github` | Org profile and org-wide GitHub defaults |
+| `/workspaces/core` | `core` | Shared Rust core (model, connector traits, view-models, storage) |
+| `/workspaces/connector-*` | `connector-youtube`, `connector-odysee`, `connector-rss` | One repo per service connector |
+| `/workspaces/app-gnome` | `app-gnome` | GNOME app (GTK4/libadwaita, Flatpak) |
+| `/workspaces/site` | `site` | flaneur.baxyz.dev |
+| `/workspaces/spikes` | `spikes` | Exploration code and findings |
 
 ## Common gotchas
 
