@@ -32,6 +32,19 @@
     "ghcr.io/helpers4/devcontainer/package-auto-install:1": {
       "autoDiscover": true
     },
+    // ── Rust + GNOME (core, connectors, app-gnome) ─────────────────────────────
+    // rustup is installed by the feature; the toolchain each repo pins in rust-toolchain.toml
+    // is fetched on first use.
+    "ghcr.io/devcontainers/features/rust:1": {
+      "profile": "default"
+    },
+    // Development headers of the GNOME stack the app links against, the GStreamer plugins that
+    // play video, and the tools of the GNOME build (Blueprint, gettext, AppStream checks).
+    // Flatpak bundles are built in CI, not here: flatpak-builder needs user namespaces, which the
+    // default Docker seccomp and AppArmor profiles deny.
+    "ghcr.io/devcontainers-extra/features/apt-get-packages:1": {
+      "packages": "pkg-config,libssl-dev,libsqlite3-dev,libgtk-4-dev,libgtk-4-bin,libadwaita-1-dev,libgstreamer1.0-dev,libgstreamer-plugins-base1.0-dev,gstreamer1.0-plugins-good,gstreamer1.0-plugins-bad,gstreamer1.0-libav,gstreamer1.0-gtk4,blueprint-compiler,gettext,desktop-file-utils,appstream,waypipe"
+    },
     "ghcr.io/helpers4/devcontainer/claude-dev:1": {
       "remoteControl": true,
       "remoteControlAutoTrust": true,
@@ -48,11 +61,17 @@
       ]
     }
   },
-  "forwardPorts": [5173],
+  "forwardPorts": [5173, 8080],
   "portsAttributes": {
     "5173": {
       "label": "Vite dev server",
       "onAutoForward": "notify"
+    },
+    // GTK's Broadway backend: run the app with GDK_BACKEND=broadway after `broadwayd :0`, and
+    // look at its layout in a browser. No video: use waypipe or the Flatpak for playback.
+    "8080": {
+      "label": "GTK Broadway",
+      "onAutoForward": "silent"
     }
   },
   "remoteUser": "node"

@@ -61,6 +61,21 @@ echo "── JavaScript toolchain ──"
 check_version node "--version" "node"
 check_cmd pnpm "pnpm"
 
+# ── Rust and GNOME toolchain ─────────────────────────────────────────────────────
+echo ""
+echo "── Rust and GNOME toolchain ──"
+
+check_version rustc "--version" "rustc"
+check_cmd cargo "cargo"
+check_cmd blueprint-compiler "blueprint-compiler"
+for lib in gtk4 libadwaita-1 gstreamer-1.0 sqlite3; do
+  if pkg-config --exists "$lib"; then
+    ok "$lib — $(pkg-config --modversion "$lib")"
+  else
+    fail "$lib — development files missing"
+  fi
+done
+
 # ── Critical environment variables ────────────────────────────────────────────
 echo ""
 echo "── Environment ──"
