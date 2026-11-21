@@ -62,12 +62,23 @@ and on GitHub Codespaces, which only ever checks out the one repo you launch the
 | --- | --- | --- |
 | `/workspaces/.dev` | `flaneur-app/.dev` | Orchestration workspace + devcontainer + canonical agent rules |
 | `/workspaces/.github` | `flaneur-app/.github` | Org profile and org-wide GitHub defaults |
+| `/workspaces/core` | `flaneur-app/core` | Shared Rust core: model, connector traits, view-models, storage |
+| `/workspaces/connector-youtube` | `flaneur-app/connector-youtube` | YouTube connector (RustyPipe) |
+| `/workspaces/connector-odysee` | `flaneur-app/connector-odysee` | Odysee connector |
+| `/workspaces/connector-rss` | `flaneur-app/connector-rss` | RSS/Atom connector and page resolvers |
+| `/workspaces/app-gnome` | `flaneur-app/app-gnome` | GNOME app (GTK4/libadwaita, Flatpak) |
+| `/workspaces/site` | `flaneur-app/site` | flaneur.baxyz.dev (VitePress on Cloudflare Workers) |
+| `/workspaces/spikes` | `flaneur-app/spikes` | Throwaway exploration code and findings |
 
 ## Devcontainer — available tools
 
 The container is self-contained; no host toolchain installation is needed.
 
 - Node.js 26
+- Rust (rustup; each repo pins its toolchain in `rust-toolchain.toml`), with the GTK4, libadwaita,
+  GStreamer and SQLite development files, Blueprint and AppStream tools for `app-gnome`
+- GUI checks from the container: `waypipe` (over SSH) or GTK Broadway on port 8080 (layout only);
+  Flatpak bundles are built in CI, because `flatpak-builder` cannot create namespaces in Docker
 - `pnpm` (via `helpers4/devcontainer/pnpm-store` + `typescript-dev`), dependencies installed on
   container creation (`package-auto-install`)
 - `vp` (Vite+: Oxlint/Oxfmt, Vitest)
@@ -79,8 +90,8 @@ The container is self-contained; no host toolchain installation is needed.
 - `org-workspace`: clones the org repos into `/workspaces` and keeps the `.code-workspace` file up
   to date
 
-Add the toolchains the product needs (other languages, Playwright, …) to
-`.devcontainer/devcontainer.json` when the first product repository needs them.
+Add further toolchains (Playwright, …) to `.devcontainer/devcontainer.json` when a product
+repository needs them.
 
 ## Secrets (OpenBao)
 
@@ -193,5 +204,5 @@ This repo's shape comes from the sibling orgs' `.dev` repos:
 - **`tuxery/.dev`** — the **AGPL-3.0-or-later** license and the `auto-header` feature: Flâneur is
   open source and syncs through a network service, so the network clause applies.
 
-No product stack is assumed yet: product-specific features (Playwright, other languages,
-databases) are added when the first product repository needs them.
+The product stack is Rust (shared core and connectors) with a GTK4/libadwaita app on GNOME;
+further toolchains are added when a product repository needs them.
